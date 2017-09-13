@@ -8,7 +8,6 @@ public class Game {
   private int count;
 
   public int guessNumber(int number) {
-    System.out.printf("\nle nombre mystere est %d\n", unknownNumber);
     if (number > unknownNumber) {
       return -1;
     } else if (number < unknownNumber) {
@@ -22,10 +21,12 @@ public class Game {
     int count = 0;
     int number = 0;
     Random rand = new Random();
-
-    unknownNumber = rand.nextInt(50) + 1;
+    int[] LEVELS = {50, 200, 500};
   
     System.out.println("HELLO TO YOU || JEU DU PLUS OU MOINS");
+    int difficulty = this.askUserDifficulty();
+
+    unknownNumber = rand.nextInt(LEVELS[difficulty - 1]) + 1;
 
     do {
       count++;
@@ -40,6 +41,31 @@ public class Game {
     } while (number != 0);
 
     System.out.printf("Bravo ! Vous avez gagné en %d coups \n", count);
+  }
+
+  private int askUserDifficulty() {
+    Scanner sc = new Scanner(System.in);
+    int validNumber = 0;
+
+    System.out.println("Veuillez séléctionner la difficultée : ");
+    System.out.println("1 - Entre 1 et 50 (noob)");
+    System.out.println("2 - Entre 1 et 200 (mouai)");
+    System.out.println("3 - Entre 1 et 500 (bogoss)");
+
+    do {
+      String input = sc.nextLine();
+
+      try {
+        validNumber = Integer.parseInt(input);
+        if (validNumber < 1 || validNumber > 3) {
+          System.out.println("---> Veuillez choisir 1, 2 ou 3 -_-'");
+        }
+      } catch(NumberFormatException nfe) {
+        System.out.println("---> CHIFFRES ONLY PLS");
+      }
+    } while(validNumber < 1 || validNumber > 3);
+
+    return validNumber;
   }
 
   private int askUserInput() {
